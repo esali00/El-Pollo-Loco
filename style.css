@@ -1,0 +1,145 @@
+@font-face {
+    font-family: 'zabars';
+    src: url('fonts/zabars.ttf') format('truetype');
+    /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url("img/desert.png");
+    background-position: center;
+    font-family: 'zabars', Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 64px;
+    letter-spacing: 3px;
+    margin: 22px 0;
+}
+
+.d-none {
+    display: none;
+}
+
+canvas {
+    background-color: black;
+}
+
+.mobile-overlay-container {
+    width: 720px;
+    height: 480px;
+    position: relative;
+}
+
+.start-screen {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.start-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 50px;
+    left: 47.5%;
+    background-color: gold;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.restart-btn {
+    cursor: pointer;
+    position: absolute;
+    top: 50px;
+    left: 42.5%;
+    background-color: gold;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    z-index: 3;
+}
+
+.start-btn:hover {
+    background-color: rgba(255, 217, 0, 0.751);
+}
+
+.end-screen-lost {
+    animation-name: slowTransition;
+    animation-duration: 4s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.end-screen-won {
+    animation-name: slowTransition;
+    animation-duration: 4s;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+
+.hud {
+    width: 90%;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+.move-btn {
+    height: 50px;
+    width: 50px;
+}
+
+#btn-explanation {
+    display: flex;
+    justify-content: space-around;
+}
+
+.explanation_keyboard {
+    height: 100px;
+    width: 175px;
+}
+
+@keyframes slowTransition {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Pollo Loco</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="init()">
+    <h1 id="title">El Pollo Loco</h1>
+
+    <div class="mobile-overlay-container">
+        <img class='end-screen-lost d-none' src='img/9_intro_outro_screens/game_over/you lost.png' />
+        <button onclick='initLevel()' class='restart-btn d-none'>REPLAY</button>
+
+        <img class='end-screen-won d-none' src='img/9_intro_outro_screens/game_over/game over.png' />
+
+        <canvas id="canvas" width="720" height="480">
+    </canvas>
+
+        <div class="hud">
+            <div id="move-btns-container">
+                <img class="left-btn move-btn" src="img/10_buttons/left_button.png">
+                <img class="up-btn move-btn" src="img/10_buttons/up_button.png">
+                <img class="right-btn move-btn" src="img/10_buttons/right_button.png">
+            </div>
+
+            <div id="throw-btn-container">
+                <img class="throw-btn move-btn" src="img/10_buttons/throw_bottle.png">
+            </div>
+        </div>
+
+        <div id="btn-explanation">
+            <img class="explanation_keyboard" src="img/keyboard_explanation.png">
+            <img class="explanation_keyboard" src="img/throw_btn_explanation.png">
+        </div>
+    </div>
+
+    <script src="js/stopableInterval.js"></script>
+    <script src="models/drawableObject.class.js"></script>
+    <script src="models/statusbar.class.js"></script>
+    <script src="models/endbossStatusbar.class.js"></script>
+    <script src="models/bottleStatusbar.class.js"></script>
+    <script src="models/coinStatusbar.class.js"></script>
+    <script src="models/movableObject.class.js"></script>
+    <script src="models/background.class.js"></script>
+    <script src="models/clouds.class.js"></script>
+    <script src="models/character.class.js"></script>
+    <script src="models/coin.class.js"></script>
+    <script src="models/chicken.class.js"></script>
+    <script src="models/smallChicken.class.js"></script>
+    <script src="models/endboss.class.js"></script>
+    <script src="models/throwableObject.class.js"></script>
+    <script src="models/bottles.class.js"></script>
+    <script src="models/keyboard.class.js"></script>
+    <script src="models/world.class.js"></script>
+    <script src="levels/level1.js"></script>
+    <script src="models/levels.class.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
