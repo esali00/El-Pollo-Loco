@@ -1,10 +1,3 @@
-function init() {
-    document.querySelector(".mobile-overlay-container").insertAdjacentHTML("afterbegin", "<img class='start-screen' src='img/9_intro_outro_screens/start/startscreen_1.png'/>")
-    document.querySelector(".mobile-overlay-container").insertAdjacentHTML("beforeend", "<button onclick='initLevel()' class='start-btn'>PLAY</button>")
-
-}
-
-
 document.querySelector(".left-btn").addEventListener("touchstart", () => {
     console.log("left")
     keyboard.LEFT = true

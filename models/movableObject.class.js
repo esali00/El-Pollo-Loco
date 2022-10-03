@@ -6,7 +6,8 @@ class movableObject extends drawableObject {
     energy = 100;
     lastHit = 0;
     firstHit = false;
-    dead = false
+    dead = false;
+    // offsetY = 0
 
     applyGravity() {
         setStopableInterval(() => {
@@ -41,21 +42,28 @@ class movableObject extends drawableObject {
 
     moveLeft() {
         this.x -= this.speed
-
     }
 
     isColliding(mo) {
-        return this.x + this.width > mo.x &&
+        return this.x + this.width - 30 > mo.x &&
             this.y + this.height > mo.y &&
             this.x < mo.x + mo.width &&
             this.y < mo.y + mo.height
     }
 
-    isCollidingMorePrecise(mo) {
-        return this.x + this.width > mo.x + 40 &&
-            this.y + this.height > mo.y + 40 &&
-            this.x + 40 < mo.x + mo.width &&
-            this.y + 40 < mo.y + mo.height
+    isCollidingEndboss(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x + mo.width - 60 &&
+            this.y < mo.y + mo.height - 60
+    }
+
+    isCollidingWithOffset(mo) {
+        return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
+            this.y + this.height > mo.y + mo.offset.top &&
+            this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
+            this.y + this.height < mo.y + mo.height - mo.offset.bottom
+
     }
 
     hit() {

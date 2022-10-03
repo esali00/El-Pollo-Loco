@@ -45,7 +45,10 @@ class World {
         this.draw();
         this.setWorld();
         this.run()
+
     }
+
+
 
     checkCollisions() {
         setStopableInterval(() => {
@@ -53,31 +56,36 @@ class World {
                 if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.dead) {
                     this.character.hit();
                     this.characterStatusbar.setPercentage(this.character.energy)
+                    console.log("hit by enemy")
                 }
 
-                if (this.character.isColliding(this.endboss)) {
+                if (this.endboss.isCollidingEndboss(this.character)) {
                     this.character.hit();
                     this.characterStatusbar.setPercentage(this.character.energy)
                 }
 
                 if (this.character.isColliding(enemy) && this.character.isAboveGround() && enemy instanceof smallChicken) {
-                    console.log("hit small chicken")
-                    enemy.dead = true
-                    this.audio_chicken.play()
-                    enemy.playAnimation(this.smallChicken.IMAGES_DEAD)
-                    setTimeout(enemy.stopAnimation(), 10000)
 
-                } else if (this.character.isColliding(enemy) && this.character.isAboveGround() && enemy instanceof Chicken) {
-                    console.log("hit normal chicken")
+                    if (!enemy.dead) {
+                        this.audio_chicken.play()
+                    }
                     enemy.dead = true
-                    this.audio_chicken.play()
+                    enemy.playAnimation(this.smallChicken.IMAGES_DEAD)
+                    enemy.stopAnimation()
+
+                } else if (this.character.isCollidingWithOffset(enemy) && this.character.isAboveGround() && enemy instanceof Chicken) {
+
+                    if (!enemy.dead) {
+                        this.audio_chicken.play()
+                    }
+                    enemy.dead = true
                     enemy.playAnimation(this.chicken.IMAGES_DEAD)
-                    setTimeout(enemy.stopAnimation(), 10000)
+                    enemy.stopAnimation()
                 }
 
             })
             this.bottles.forEach(bottle => {
-                if (this.character.isColliding(bottle) && (bottle.height != 0 && bottle.width != 0)) {
+                if (this.character.isCollidingWithOffset(bottle) && (bottle.height != 0 && bottle.width != 0)) {
                     bottle.height = 0
                     bottle.width = 0
                     this.bottle_amount++;
@@ -85,8 +93,9 @@ class World {
                 }
             })
             this.throwableObjects.forEach(throwableObject => {
-                if (this.endboss.isCollidingMorePrecise(throwableObject) && !this.endboss.firstHit && (throwableObject.height != 0 && throwableObject.width != 0)) {
+                if (this.endboss.isCollidingEndboss(throwableObject) && !this.endboss.firstHit && (throwableObject.height != 0 && throwableObject.width != 0)) {
                     throwableObject.playAnimation(this.throwable_object.IMAGES_SPLASH)
+                    this.audio_chicken.play()
                     this.endboss.firstHit = true
                     setTimeout(() => {
                         throwableObject.height = 0
@@ -97,7 +106,7 @@ class World {
                 }
             })
             this.coins.forEach(coin => {
-                if (this.character.isColliding(coin) && (coin.height != 0 && coin.width != 0)) {
+                if (this.character.isCollidingWithOffset(coin) && (coin.height != 0 && coin.width != 0)) {
                     this.audio_coin.play()
                     coin.height = 0
                     coin.width = 0
@@ -105,9 +114,6 @@ class World {
                     this.coinStatusbar = new CoinStatusbar(this.coin_amount)
                 }
             })
-            if (this.character.x == 300 && !this.endboss.hadFirstContact || this.character.x == 600 && !this.endboss.hadFirstContact || this.character.x == 900 && !this.endboss.hadFirstContact || this.character.x == 1200 && !this.endboss.hadFirstContact || this.character.x == 1450 && !this.endboss.hadFirstContact || this.character.x == 1700) {
-                this.endboss = new Endboss(this)
-            }
 
         }, 200)
     }
@@ -116,18 +122,33 @@ class World {
         setStopableInterval(() => {
             this.checkCollisions()
             this.checkThrowableObject()
-            setTimeout(this.endGame(), 5000)
+            this.checkEndboss()
+            this.endGame()
         }, 200)
+    }
+
+    checkEndboss() {
+        if (this.endboss.x - this.character.x < 400 && !this.endboss.hadFirstContact) {
+            this.endboss.animate()
+        }
     }
 
     checkThrowableObject() {
         if (this.keyboard.D && this.bottle_amount > 0) {
             this.audio_throw.play()
-            this.throwableObjects.push(new throwableObject(this.endboss, this.character.otherDirection, this.character.x + 80, this.character.y + 80))
+
+            this.throwableObjects.push(this.returnSuitableThrowableObject())
             this.bottle_amount--;
             this.bottleStatusbar = new BottleStatusbar(this.bottle_amount)
         }
+    }
 
+    returnSuitableThrowableObject() {
+        if (this.character.otherDirection == true) {
+            return new throwableObject(this.endboss, this.character.otherDirection, this.character.x - 80, this.character.y + 80)
+        } else {
+            return new throwableObject(this.endboss, this.character.otherDirection, this.character.x + 80, this.character.y + 80)
+        }
     }
 
     setWorld() {
@@ -139,17 +160,24 @@ class World {
             this.level.enemies.forEach(enemy => {
                 enemy.stopAnimation()
             })
-            setTimeout(GameOver(), 10000)
-            this.audio_lose.play()
+
             this.character.walking_sound.pause()
+                // setTimeout(() => {
+                //     this.audio_lose.play()
+                //     GameOver()
+                // }, 200)
+            this.audio_lose.play()
+            GameOver()
         }
         if (this.endboss.isDead()) {
             this.level.enemies.forEach(enemy => {
                 enemy.stopAnimation()
             })
-            setTimeout(GameWon(), 10000)
-            this.audio_win.play()
             this.character.walking_sound.pause()
+            setTimeout(() => {
+                this.audio_win.play()
+                GameWon()
+            }, 2000)
         }
     }
 

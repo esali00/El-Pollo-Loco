@@ -6,7 +6,6 @@ function setStopableInterval(fn, time) {
 }
 
 function GameOver() {
-    IntervalIds.forEach(clearInterval)
 
     if (document.querySelector(".restart-btn")) {
         document.querySelector(".restart-btn").classList.remove("d-none")
@@ -16,10 +15,11 @@ function GameOver() {
         document.querySelector(".end-screen-lost").classList.remove("d-none")
     }
 
+    setTimeout(IntervalIds.forEach(clearInterval), 2000)
+
 }
 
 function GameWon() {
-    IntervalIds.forEach(clearInterval)
 
     if (document.querySelector(".restart-btn")) {
         document.querySelector(".restart-btn").classList.remove("d-none")
@@ -28,4 +28,6 @@ function GameWon() {
     if (document.querySelector(".end-screen-won")) {
         document.querySelector(".end-screen-won").classList.remove("d-none")
     }
+
+    setTimeout(IntervalIds.forEach(clearInterval), 2000)
 }

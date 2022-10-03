@@ -4,19 +4,26 @@
     /* Chrome 4+, Firefox 3.5, Opera 10+, Safari 3—5 */
 }
 
+html {
+    height: 100%;
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-image: url("img/desert.png");
-    background-position: center;
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
     font-family: 'zabars', Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
 h1 {
     font-size: 64px;
     letter-spacing: 3px;
-    margin: 22px 0;
+    margin: 10px 0;
 }
 
 .d-none {
@@ -25,6 +32,7 @@ h1 {
 
 canvas {
     background-color: black;
+    display: block;
 }
 
 .mobile-overlay-container {
@@ -43,11 +51,17 @@ canvas {
     right: 0;
 }
 
+#init-btn-container {
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
 .start-btn {
     cursor: pointer;
-    position: absolute;
-    top: 50px;
-    left: 47.5%;
     background-color: gold;
     font-weight: bold;
     padding: 10px 20px;
@@ -58,9 +72,6 @@ canvas {
 
 .restart-btn {
     cursor: pointer;
-    position: absolute;
-    top: 50px;
-    left: 42.5%;
     background-color: gold;
     font-weight: bold;
     padding: 10px 20px;
@@ -98,29 +109,60 @@ canvas {
 }
 
 .hud {
-    width: 90%;
-    margin: 0 auto;
+    width: 95%;
+    margin: 0 18px;
     position: absolute;
     bottom: 0;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: center;
     z-index: 2;
 }
 
+.fullscreen-img {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 2;
+}
+
+.expand-img {
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 2;
+}
+
 .move-btn {
+    cursor: pointer;
     height: 50px;
     width: 50px;
 }
 
 #btn-explanation {
+    width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+    z-index: 2;
 }
 
-.explanation_keyboard {
-    height: 100px;
-    width: 175px;
+.direction {
+    display: flex;
+    align-items: center;
+}
+
+.direction-img {
+    height: 30px;
+    width: auto;
+}
+
+.move {
+    margin-left: 10px;
 }
 
 @keyframes slowTransition {
@@ -132,14 +174,119 @@ canvas {
     }
 }
 
+@media (max-width: 1024px) {
+    body {
+        justify-content: center;
+        height: 100%;
+    }
+    #title {
+        display: none;
+    }
+}
+
 @media only screen and (max-width: 720px) {
+    body {
+        justify-content: center;
+        height: auto;
+    }
     canvas {
         width: 100%;
+    }
+    .mobile-overlay-container {
+        height: 100%;
+        width: 100%;
+    }
+    #init-btn-container {
+        top: 40px;
+    }
+    .hud {
+        margin: 0 10px;
+    }
+    .move-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media only screen and (max-width: 540px) {
+    canvas {
+        width: 100%;
+    }
+    .mobile-overlay-container {
+        height: 100%;
+        width: 100%;
+    }
+    #init-btn-container {
+        top: 25px;
+    }
+    .start-btn {
+        padding: 5px 15px;
+    }
+    .restart-btn {
+        padding: 5px 15px;
+    }
+    .move-btn {
+        width: 30px;
+        height: 30px;
+    }
+    /* #btn-explanation {
+        bottom: 5px;
+    } */
+    .direction-img {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    canvas {
+        width: 100%;
+    }
+    .hud {
+        display: flex;
+    }
+    #btn-explanation {
+        display: none;
+    }
+    #init-btn-container {
+        height: 30px;
+        top: 15px;
+    }
+    .move-btn {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media only screen and (max-width: 380px) {
+    canvas {
+        width: 100%;
+    }
+    .start-btn {
+        padding: 5px 10px;
+    }
+    .restart-btn {
+        padding: 5px 10px;
     }
 }
 
 @media only screen and (max-height: 480px) {
     canvas {
         height: 100vh;
+        width: 100%;
+    }
+    .mobile-overlay-container {
+        width: 100%;
+        height: 100%;
+    }
+    .hud {
+        display: flex;
+    }
+    #btn-explanation {
+        display: none;
+    }
+    .move-btn {
+        height: 40px;
+        width: 40px;
     }
 }

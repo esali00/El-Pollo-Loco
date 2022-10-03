@@ -9,17 +9,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="init()">
+<body>
     <h1 id="title">El Pollo Loco</h1>
 
     <div class="mobile-overlay-container">
         <img class='end-screen-lost d-none' src='img/9_intro_outro_screens/game_over/you lost.png' />
-        <button onclick='initLevel()' class='restart-btn d-none'>REPLAY</button>
+
+        <img class='start-screen' src='img/9_intro_outro_screens/start/startscreen_1.png' />
+
+        <div id="init-btn-container">
+            <button onclick='initLevel()' class='restart-btn d-none'>REPLAY</button>
+            <button onclick='initLevel()' class='start-btn'>PLAY</button>
+        </div>
+
 
         <img class='end-screen-won d-none' src='img/9_intro_outro_screens/game_over/game over.png' />
 
         <canvas id="canvas" width="720" height="480">
-    </canvas>
+        </canvas>
 
         <div class="hud">
             <div id="move-btns-container">
@@ -34,10 +41,14 @@
         </div>
 
         <div id="btn-explanation">
-            <img class="explanation_keyboard" src="img/keyboard_explanation.png">
-            <img class="explanation_keyboard" src="img/throw_btn_explanation.png">
+            <div class="direction"><img class="direction-img" src="img/arrow-92-24.png"><span class="move">Move Left</span></div>
+            <div class="direction"><img class="direction-img" src="img/arrow-28-24.png"><span class="move">Move Right</span></div>
+            <div><span>Space:</span><span class="move">Jump</span></div>
+            <div><span>D:</span><span class="move">Throw Bottle</span></div>
         </div>
     </div>
+
+
 
     <script src="js/stopableInterval.js"></script>
     <script src="models/drawableObject.class.js"></script>

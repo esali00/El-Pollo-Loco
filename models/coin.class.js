@@ -9,4 +9,11 @@ class Coin extends drawableObject {
         this.loadImage("img/8_coin/coin_1.png")
     }
 
+    offset = {
+        top: 60,
+        left: 60,
+        right: 60,
+        bottom: 0
+    }
+
 }
