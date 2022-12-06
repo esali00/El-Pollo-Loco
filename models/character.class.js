@@ -37,13 +37,15 @@ class Character extends movableObject {
     ]
 
     world;
-    speed = 10;
+    speed = 6;
     walking_sound = new Audio("audio/running.mp3")
+    movement;
+    extra_movement;
 
     offset = {
         top: 120,
-        left: 20,
-        right: 20,
+        left: 30,
+        right: 30,
         bottom: 0
     }
 
@@ -56,13 +58,11 @@ class Character extends movableObject {
         this.loadImages(this.IMAGES_HURT);
         this.applyGravity();
         this.animate();
-        console.log(this.world)
-        console.log(this.x)
     }
 
     animate() {
         this.walking_sound.playbackRate = 2.5
-        setStopableInterval(
+        this.movement = setInterval(
             () => {
                 this.walking_sound.pause()
                 if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -79,7 +79,7 @@ class Character extends movableObject {
             }, 1000 / 60
         )
 
-        setStopableInterval(() => {
+        this.extra_movement = setInterval(() => {
 
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD)
@@ -101,12 +101,17 @@ class Character extends movableObject {
                 this.jump()
             }
 
-        }, 50)
+        }, 100)
 
     }
 
     jump() {
         this.speedY = 30
+    }
+
+    stopAnimation() {
+        clearInterval(this.movement)
+        clearInterval(this.extra_movement)
     }
 
 

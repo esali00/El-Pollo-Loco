@@ -1,5 +1,4 @@
 document.querySelector(".left-btn").addEventListener("touchstart", () => {
-    console.log("left")
     keyboard.LEFT = true
 })
 
@@ -8,7 +7,6 @@ document.querySelector(".left-btn").addEventListener("touchend", () => {
 })
 
 document.querySelector(".up-btn").addEventListener("touchstart", () => {
-    console.log("up")
     keyboard.SPACE = true
 })
 
@@ -18,7 +16,6 @@ document.querySelector(".up-btn").addEventListener("touchend", () => {
 
 document.querySelector(".right-btn").addEventListener("touchstart", () => {
     keyboard.RIGHT = true
-    console.log("right")
 })
 
 document.querySelector(".right-btn").addEventListener("touchend", () => {
@@ -27,7 +24,6 @@ document.querySelector(".right-btn").addEventListener("touchend", () => {
 
 document.querySelector(".throw-btn").addEventListener("touchstart", () => {
     keyboard.D = true
-    console.log("right")
 })
 
 document.querySelector(".throw-btn").addEventListener("touchend", () => {
@@ -79,3 +75,8 @@ window.addEventListener("keyup", (event) => {
     }
 
 })
+
+function redirectBackToMainMenu() {
+    location.reload(true)
+
+}

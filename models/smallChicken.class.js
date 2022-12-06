@@ -13,9 +13,9 @@ class smallChicken extends movableObject {
     walking_animation;
 
     offset = {
-        top: 5,
-        left: 5,
-        right: 5,
+        top: 0,
+        left: 0,
+        right: 0,
         bottom: 0
     }
 
@@ -29,7 +29,6 @@ class smallChicken extends movableObject {
     }
 
     animate() {
-
         this.move = setInterval(() => {
             this.x -= this.speed
         }, 1000 / 60)
@@ -37,7 +36,6 @@ class smallChicken extends movableObject {
         this.walking_animation = setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING)
         }, 200)
-
     }
 
     stopAnimation() {

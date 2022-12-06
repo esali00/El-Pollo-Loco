@@ -7,6 +7,7 @@ class movableObject extends drawableObject {
     lastHit = 0;
     firstHit = false;
     dead = false;
+    groundPosition = 180;
     // offsetY = 0
 
     applyGravity() {
@@ -18,14 +19,14 @@ class movableObject extends drawableObject {
         }, 1000 / 25);
     }
 
-    isAboveGround() {
+    isAboveGround() {   
         if (this instanceof throwableObject) {
             return true
         } else {
             return this.y < 180
         }
-
     }
+
 
     playAnimation(images) {
         let i = this.currentImage % images.length
@@ -45,9 +46,16 @@ class movableObject extends drawableObject {
     }
 
     isColliding(mo) {
-        return this.x + this.width - 30 > mo.x &&
+        return this.x + this.width > mo.x &&
             this.y + this.height > mo.y &&
             this.x < mo.x + mo.width &&
+            this.y < mo.y + mo.height
+    }
+
+    isCollidingSmallChicken(mo) {
+        return this.x + this.width - 50 > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x + 50 < mo.x + mo.width &&
             this.y < mo.y + mo.height
     }
 
@@ -67,7 +75,7 @@ class movableObject extends drawableObject {
     }
 
     hit() {
-        this.energy -= 2
+        this.energy -= 0.2
         if (this.energy < 0) {
             this.energy = 0
         } else {

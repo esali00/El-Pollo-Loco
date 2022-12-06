@@ -21,6 +21,9 @@ class BottleStatusbar extends drawableObject {
     }
 
     resolveImageIndex(amount) {
+        if (amount > 5) {
+            return this.ImageCache[this.IMAGES[5]]
+        }
         return this.ImageCache[this.IMAGES[amount]]
     }
 }

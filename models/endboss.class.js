@@ -2,6 +2,7 @@ class Endboss extends movableObject {
     height = 400
     width = 300
     y = 60
+    speed = 1
 
     IMAGES_ALERT = [
         "img/4_enemie_boss_chicken/2_alert/G5.png",
@@ -43,11 +44,13 @@ class Endboss extends movableObject {
     world;
     hadFirstContact = false;
     moveLeft;
+    animation_counter_over_16 = false
+    
 
     offset = {
         top: 5,
-        left: 20,
-        right: 20,
+        left: 30,
+        right: 30,
         bottom: 0
     }
 
@@ -60,39 +63,38 @@ class Endboss extends movableObject {
         this.loadImages(this.IMAGES_HURT)
         this.loadImages(this.IMAGES_DEAD)
         this.x = 2100
-
     }
 
 
 
-    animate() {
-        let i = 0;
+    animate() {    
         this.hadFirstContact = true
 
         setStopableInterval(() => {
 
-            if (i <= 8) {
+            if (animation_counter <= 8) {
                 this.playAnimation(this.IMAGES_ALERT)
-            } else if (i >= 8 && i <= 16) {
+            } else if (animation_counter >= 8 && animation_counter <= 16) {
                 this.playAnimation(this.IMAGES_ATTACK)
-            } else if (i > 16 && !this.isDead()) {
+            } else if (animation_counter >= 16) {
                 this.playAnimation(this.IMAGES_WALKING)
-                setStopableInterval(() => {
-                    this.x -= this.speed
-                }, 1000 / 60)
-            }
-
-            if (this.isDead()) {
+            } if (this.isDead()) {
                 this.speed = 0
                 this.playAnimation(this.IMAGES_DEAD)
-
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT)
             }
 
-            i++;
+            animation_counter++;
         }, 200)
+    }
 
+    walkingAnimation() {
+        if (!this.isDead()) {
+            setStopableInterval(() => {
+                this.x -= this.speed
+            }, 1000 / 60)
+        }
     }
 
 }

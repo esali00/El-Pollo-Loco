@@ -19,6 +19,10 @@ function initLevel() {
             new smallChicken(),
         ],
         clouds = [
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
+            new Cloud(),
             new Cloud()
         ],
         backgrounds = [

@@ -13,6 +13,7 @@ class World {
     coinStatusbar = new CoinStatusbar(this.coin_amount)
     chicken = new Chicken()
     throwable_object = new throwableObject(this.endboss, this.character.x, 0, 0)
+    splash = new Splash();
     level = level1
     canvas;
     ctx;
@@ -28,8 +29,12 @@ class World {
         new Bottles(),
         new Bottles(),
         new Bottles(),
+        new Bottles(),  
         new Bottles(),
+        new Bottles(), 
     ];
+    splash_object = new Bottles()
+
     audio_chicken = new Audio("audio/chicken.mp3")
     audio_jump = new Audio("audio/jump.mp3")
     audio_coin = new Audio("audio/coin.mp3")
@@ -45,77 +50,134 @@ class World {
         this.draw();
         this.setWorld();
         this.run()
+    }
 
+
+    characterIsTakingDamage() {
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isCollidingWithOffset(enemy) && !this.character.isAboveGround() && !enemy.dead) {
+                this.character.hit();
+                this.characterStatusbar.setPercentage(this.character.energy)
+            }
+            if (this.character.isCollidingSmallChicken(enemy) && enemy instanceof smallChicken && !this.character.isAboveGround() && !enemy.dead) {
+                this.character.hit();
+                this.characterStatusbar.setPercentage(this.character.energy)
+            }
+        })
+    }
+
+    
+    characterIskillingEnemies() {
+        this.level.enemies.forEach(enemy => {
+
+            this.throwableBottleIsCollidingWithEnemies(enemy)
+
+            if (this.character.isCollidingWithOffset(enemy) && this.character.isAboveGround() && (enemy instanceof smallChicken || enemy instanceof Chicken)) {
+                if (!enemy.dead) {
+                    this.audio_chicken.play()
+                }
+                enemy.dead = true
+
+                if (enemy instanceof smallChicken) {
+                    enemy.playAnimation(this.smallChicken.IMAGES_DEAD)
+                } else {
+                    enemy.playAnimation(this.chicken.IMAGES_DEAD)
+                }
+                enemy.stopAnimation()
+            }
+        })
+    }
+
+    characterisCollidingWithEndboss() {
+        if (this.endboss.isCollidingEndboss(this.character)) {
+            this.character.hit();
+            this.characterStatusbar.setPercentage(this.character.energy)
+        }
+    }
+
+
+    bottleIsCollidingWithCharacter() {
+        this.bottles.forEach(bottle => {
+            if (this.character.isCollidingWithOffset(bottle) && (bottle.height != 0 && bottle.width != 0)) {
+                bottle.height = 0
+                bottle.width = 0
+                this.bottle_amount++;
+                this.bottleStatusbar = new BottleStatusbar(this.bottle_amount)
+            }
+        })
+    }
+
+
+    throwableBottleIsCollidingWithEnemies(enemy) {
+        this.throwableObjects.forEach(throwableObject => {
+            if (enemy.isColliding(throwableObject)) {
+                throwableObject.splash(this.throwable_object.IMAGES_SPLASH)
+                // throwableObject.playAnimation(this.throwable_object.IMAGES_SPLASH)
+                setTimeout(() => {
+                    throwableObject.height = 0
+                    throwableObject.width = 0
+                }, 150)
+
+                if (!enemy.dead) {
+                    this.audio_chicken.play()
+                }
+                enemy.dead = true
+
+                if (enemy instanceof smallChicken) {
+                    enemy.playAnimation(this.smallChicken.IMAGES_DEAD)
+                } else {
+                    enemy.playAnimation(this.chicken.IMAGES_DEAD)
+                }
+                enemy.stopAnimation()
+            }   
+        })
+    }
+
+
+    bottleIsCollidingWithEndboss() {
+        this.throwableObjects.forEach(throwableObject => {
+            if (this.endboss.isCollidingEndboss(throwableObject)) {
+                throwableObject.splash(this.throwable_object.IMAGES_SPLASH)
+                
+                setTimeout(() => {
+                    throwableObject.height = 0
+                    throwableObject.width = 0
+                }, 250)
+            }
+
+            if (this.endboss.isCollidingEndboss(throwableObject) && !this.endboss.firstHit && (throwableObject.height != 0 && throwableObject.width != 0)) {
+                this.endboss.firstHit = true
+                this.endboss.hitEndboss()
+                    // this.endbossStatusbar = new EndbossStatusbar(this.endboss.energy)
+            }
+        })
+    }
+
+    coinIsCollidingWithCharacter() {
+        this.coins.forEach(coin => {
+            if (this.character.isCollidingWithOffset(coin) && (coin.height != 0 && coin.width != 0)) {
+                this.audio_coin.play()
+                coin.height = 0
+                coin.width = 0
+                this.coin_amount++;
+                this.coinStatusbar = new CoinStatusbar(this.coin_amount)
+            }
+        })
     }
 
 
 
     checkCollisions() {
         setStopableInterval(() => {
-            this.level.enemies.forEach(enemy => {
-                if (this.character.isColliding(enemy) && !this.character.isAboveGround() && !enemy.dead) {
-                    this.character.hit();
-                    this.characterStatusbar.setPercentage(this.character.energy)
-                    console.log("hit by enemy")
-                }
+            this.characterIsTakingDamage()
+            this.characterIskillingEnemies()
+            this.characterisCollidingWithEndboss()
+            this.bottleIsCollidingWithCharacter()
+            this.bottleIsCollidingWithEndboss()
+            // this.throwableBottleIsCollidingWithEnemies()
+            this.coinIsCollidingWithCharacter()
 
-                if (this.endboss.isCollidingEndboss(this.character)) {
-                    this.character.hit();
-                    this.characterStatusbar.setPercentage(this.character.energy)
-                }
-
-                if (this.character.isColliding(enemy) && this.character.isAboveGround() && enemy instanceof smallChicken) {
-
-                    if (!enemy.dead) {
-                        this.audio_chicken.play()
-                    }
-                    enemy.dead = true
-                    enemy.playAnimation(this.smallChicken.IMAGES_DEAD)
-                    enemy.stopAnimation()
-
-                } else if (this.character.isCollidingWithOffset(enemy) && this.character.isAboveGround() && enemy instanceof Chicken) {
-
-                    if (!enemy.dead) {
-                        this.audio_chicken.play()
-                    }
-                    enemy.dead = true
-                    enemy.playAnimation(this.chicken.IMAGES_DEAD)
-                    enemy.stopAnimation()
-                }
-
-            })
-            this.bottles.forEach(bottle => {
-                if (this.character.isCollidingWithOffset(bottle) && (bottle.height != 0 && bottle.width != 0)) {
-                    bottle.height = 0
-                    bottle.width = 0
-                    this.bottle_amount++;
-                    this.bottleStatusbar = new BottleStatusbar(this.bottle_amount)
-                }
-            })
-            this.throwableObjects.forEach(throwableObject => {
-                if (this.endboss.isCollidingEndboss(throwableObject) && !this.endboss.firstHit && (throwableObject.height != 0 && throwableObject.width != 0)) {
-                    throwableObject.playAnimation(this.throwable_object.IMAGES_SPLASH)
-                    this.audio_chicken.play()
-                    this.endboss.firstHit = true
-                    setTimeout(() => {
-                        throwableObject.height = 0
-                        throwableObject.width = 0
-                    }, 25)
-                    this.endboss.hitEndboss()
-                        // this.endbossStatusbar = new EndbossStatusbar(this.endboss.energy)
-                }
-            })
-            this.coins.forEach(coin => {
-                if (this.character.isCollidingWithOffset(coin) && (coin.height != 0 && coin.width != 0)) {
-                    this.audio_coin.play()
-                    coin.height = 0
-                    coin.width = 0
-                    this.coin_amount++;
-                    this.coinStatusbar = new CoinStatusbar(this.coin_amount)
-                }
-            })
-
-        }, 200)
+        }, 100)
     }
 
     run() {
@@ -128,8 +190,11 @@ class World {
     }
 
     checkEndboss() {
-        if (this.endboss.x - this.character.x < 400 && !this.endboss.hadFirstContact) {
+        if (this.endboss.x - this.character.x < 550 && !this.endboss.hadFirstContact) {
             this.endboss.animate()
+            setTimeout(() => {
+                this.endboss.walkingAnimation()
+            },3500)
         }
     }
 
@@ -160,12 +225,8 @@ class World {
             this.level.enemies.forEach(enemy => {
                 enemy.stopAnimation()
             })
-
+            this.character.stopAnimation()
             this.character.walking_sound.pause()
-                // setTimeout(() => {
-                //     this.audio_lose.play()
-                //     GameOver()
-                // }, 200)
             this.audio_lose.play()
             GameOver()
         }
@@ -173,6 +234,7 @@ class World {
             this.level.enemies.forEach(enemy => {
                 enemy.stopAnimation()
             })
+            this.character.stopAnimation()
             this.character.walking_sound.pause()
             setTimeout(() => {
                 this.audio_win.play()
@@ -187,6 +249,7 @@ class World {
 
         this.ctx.translate(this.camera_x, 0)
         this.addObjectsToMap(this.level.backgrounds)
+        this.addObjectsToMap(this.level.clouds)
 
         this.ctx.translate(-this.camera_x, 0)
         this.addToMap(this.characterStatusbar)
@@ -196,14 +259,13 @@ class World {
 
         this.addObjectsToMap(this.coins)
         this.addObjectsToMap(this.bottles)
-        this.addObjectsToMap(this.throwableObjects)
-
 
         this.addToMap(this.character)
         this.addObjectsToMap(this.level.enemies)
-        this.addObjectsToMap(this.level.clouds)
-            // this.addToMap(this.endbossStatusbar)
+
+        // this.addToMap(this.endbossStatusbar)
         this.addToMap(this.endboss)
+        this.addObjectsToMap(this.throwableObjects)
 
         this.ctx.translate(-this.camera_x, 0)
 
@@ -226,7 +288,7 @@ class World {
             this.flipImage(mo)
         }
         mo.draw(this.ctx)
-        mo.drawFrame(this.ctx)
+            // mo.drawFrame(this.ctx)
 
         if (mo.otherDirection) {
             this.flipImageBack(mo)

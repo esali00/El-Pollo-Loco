@@ -1,5 +1,6 @@
 class throwableObject extends movableObject {
     character_otherDirection;
+    groundPosition = 340
 
     IMAGES_ROTATING = [
         "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
@@ -23,7 +24,8 @@ class throwableObject extends movableObject {
         this.loadImages(this.IMAGES_SPLASH)
         this.x = x
         this.y = y
-        this.height = 80
+        this.height = 70
+        this.width = 70
         this.endboss = endboss
         this.character_otherDirection = otherDirection
         this.throw()
@@ -43,4 +45,17 @@ class throwableObject extends movableObject {
             }
         }, 50)
     }
+
+    splash() {
+        this.breakbottle = setStopableInterval( () => {
+            this.playAnimation(this.IMAGES_SPLASH)
+            this.stopSplash()        
+       }, 25)
+   }
+
+   stopSplash() {
+        clearInterval(this.breakbottle)
+   }
+
+
 }

@@ -1,7 +1,4 @@
-class Bottles extends drawableObject {
-    y = 365
-    height = 70;
-    width = 70;
+class Splash extends movableObject {
 
     offset = {
         top: 30,
@@ -20,9 +17,16 @@ class Bottles extends drawableObject {
     ]
 
     constructor() {
-        super().loadImage("img/6_salsa_bottle/1_salsa_bottle_on_ground.png");
-        this.x = 400 + Math.random() * 800
+        super().loadImage("img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png")
+        this.loadImages(this.IMAGES_SPLASH)
+        this.height = 60;
+        this.width = 60;
     }
 
+    // animate() {
+    //     setInterval(() => {
+    //         this.playAnimation(this.IMAGES_SPLASH);
+    //     }, 200);
+    //   }
 
 }

@@ -1,4 +1,5 @@
 let IntervalIds = []
+let animation_counter = 0;
 
 function setStopableInterval(fn, time) {
     let id = setInterval(fn, time)
@@ -6,7 +7,6 @@ function setStopableInterval(fn, time) {
 }
 
 function GameOver() {
-
     if (document.querySelector(".restart-btn")) {
         document.querySelector(".restart-btn").classList.remove("d-none")
     }
@@ -15,7 +15,8 @@ function GameOver() {
         document.querySelector(".end-screen-lost").classList.remove("d-none")
     }
 
-    setTimeout(IntervalIds.forEach(clearInterval), 2000)
+
+    IntervalIds.forEach(clearInterval)
 
 }
 
@@ -29,5 +30,6 @@ function GameWon() {
         document.querySelector(".end-screen-won").classList.remove("d-none")
     }
 
-    setTimeout(IntervalIds.forEach(clearInterval), 2000)
+    
+    IntervalIds.forEach(clearInterval)
 }
